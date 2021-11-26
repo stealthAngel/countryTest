@@ -18,12 +18,10 @@ namespace w4sdTest.Controllers
     {
         private readonly Mock<IAddressCountryRulesRepository> _addressCountryRulesRepositoryMock;
         private readonly ICountryRules _countryRules;
-        // private readonly Mock<SuperContext> _superContextMock;
         public AddressControllerTests()
         {
             _addressCountryRulesRepositoryMock = new Mock<IAddressCountryRulesRepository>();
             _countryRules = new CountryRules();
-            // _superContextMock = new Mock<SuperContext>(new object[] { new DbContextOptions<SuperContext>() });
         }
 
         [Fact]
@@ -58,13 +56,11 @@ namespace w4sdTest.Controllers
             address.Zipcode = "";
             address.HouseNumber = "";
             result = addressesController.ValidateAddress(address);
-            okResult = result as OkObjectResult;
+            var badRequestResult = result as BadRequestObjectResult;
 
-            Assert.NotNull(okResult);
-            Assert.NotNull(okResult?.Value);
-            Assert.IsType<bool>(okResult?.Value);
-            Assert.False((bool?)okResult?.Value);
-            Assert.Equal(200, okResult?.StatusCode);
+            Assert.NotNull(badRequestResult);
+            Assert.NotNull(badRequestResult?.Value);
+            Assert.Equal(400, badRequestResult?.StatusCode);
         }
     }
 }
